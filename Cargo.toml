@@ -1,0 +1,8 @@
+[package]
+name = "rust-notebook"
+version = "0.1.0"
+authors = ["kagari <e175766@ie.u-ryukyu.ac.jp>"]
+edition = "2018"
+
+[dependencies]
+rocket = "0.4.0"
