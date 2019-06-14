@@ -1,4 +1,4 @@
-#[cfg(test)]
+#[cfg(tet)]
 mod tests {
     #[test]
     fn it_works() {
