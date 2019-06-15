@@ -14,8 +14,9 @@ use rocket_contrib::json::JsonValue;
 fn run(input: &str) -> String {
     let path = Path::new("./tmp.rs");
     std::fs::write(path, input);
-    if let hoge =  Command::new("rustc").arg(path).output().expect("failed to compile").stderr {
-        return String::from_utf8(hoge).unwrap();
+    let err = Command::new("rustc").arg(path).output().expect("failed to compile").stderr;
+    if !err.is_empty() {
+        return String::from_utf8(err).unwrap();
     };
     // コンパイル時にエラーが出た場合に以下の処理を行わない
     let output = Command::new("./tmp").output().expect("failed to execute process");
