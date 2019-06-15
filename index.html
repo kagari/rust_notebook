@@ -44,6 +44,8 @@
       .output pre {
         width: 100%;
 
+        margin: 0;
+
         font-family: "Menlo", serif;
         font-size: 16px;
       }
@@ -51,11 +53,11 @@
   </head>
   <body>
     <div class="app">
-      <div class="input">
+      <div class="input" tabindex="2">
         <textarea autocorrect="off" autocapitalize="off"　spellcheck="false" tabindex="0"></textarea>
       </div>
 
-      <button type="button" id="submit">submit</button>
+      <!-- <button type="button" id="submit">submit</button> -->
 
       <div class="output">
         <pre></pre>
@@ -64,7 +66,38 @@
 
     <script>
       $(function(){
+        function submitCode() {
+          var $input = $('.input textarea').val();
+          $('.output pre').text('');
 
+          $.ajax({
+              url:'http://localhost:8000/api',
+              type:'POST',
+              data:$input
+          })
+          // Ajaxリクエストが成功した時発動
+          .done( (data) => {
+              $('.output pre').html(data.text[0]);
+              // console.log(data);
+          })
+          // Ajaxリクエストが失敗した時発動
+          .fail( (data) => {
+              $('.output pre').html(data.text[0]);
+              // console.log(data);
+          })
+          // Ajaxリクエストが成功・失敗どちらでも発動
+          .always( (data) => {
+          });
+        }
+
+        $('.input, .input textarea').on('keydown', function(e){
+          if(event.shiftKey){
+            if(e.keyCode === 13){
+              submitCode();
+              return false;
+            }
+          }
+        });
         // textareaでTabKeyでインデント出来るようにする．
         $('textarea').on('keydown', function(e){
             if (e.keyCode === 9) {
@@ -78,29 +111,9 @@
             }
         });
 
-        $('#submit').on('click', function() {
-          var $input = $('.input textarea').val();
-          $('.output pre').text('');
-
-          $.ajax({
-              url:'http://localhost:8000/api',
-              type:'POST',
-              data:$input
-          })
-          // Ajaxリクエストが成功した時発動
-          .done( (data) => {
-              $('.output pre').html(data.text[0]);
-              console.log(data);
-          })
-          // Ajaxリクエストが失敗した時発動
-          .fail( (data) => {
-              $('.output pre').html(data.text[0]);
-              console.log(data);
-          })
-          // Ajaxリクエストが成功・失敗どちらでも発動
-          .always( (data) => {
-          });
-        });
+        // $('#submit').on('click', function() {
+        //   submitCode();
+        // });
       });
     </script>
   </body>
