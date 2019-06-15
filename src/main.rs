@@ -6,18 +6,31 @@ extern crate json;
 
 use std::path::Path;
 use std::fs::File;
-use std::io::Read;
+use std::fs::{write};
+use std::io::{Read};
+use std::process::Command; // Rust のプロセスを立てる
 use rocket::response::content::Html;
 use rocket_contrib::json::JsonValue;
 
+fn run(input: &str) -> String {
+    let path = Path::new("./tmp.rs");
+    std::fs::write(path, input);
+    Command::new("rustc").arg(path).output().expect("failed to compile");
+    let output = Command::new("./tmp").output().expect("failed to execute process");
+    String::from_utf8(output.stdout).unwrap()
+}
+
 #[post("/", data="<input>")]
-fn hello_test(input: String) -> JsonValue {
+fn run_post_code(input: String) -> JsonValue {
+    // 受け取ったコードを実行する
+    let output = run(input.as_str());
+    // 結果をjsonに格納する
     json!(
         {
             "name": "stdout",
             "output_type": "stream",
             "text": [
-                input
+                output
             ]
         })
 }
@@ -79,6 +92,6 @@ fn _make_dir_list_html(path: &Path) -> String {
 fn main() {
     rocket::ignite()
         .mount("/", routes![index, entrunce])
-        .mount("/api", routes![hello_test])
+        .mount("/api", routes![run_post_code])
         .launch();
 }
