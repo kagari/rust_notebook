@@ -10,19 +10,15 @@ use std::io::Read;
 use rocket::response::content::Html;
 use rocket_contrib::json::JsonValue;
 
-#[post("/")]
-fn hello_test() -> JsonValue {
+#[post("/", data="<input>")]
+fn hello_test(input: String) -> JsonValue {
     json!(
         {
-            "code": 200,
-            "success": true,
-            "payload": {
-                "features": [
-                    "awesome",
-                    "easyAPI",
-                    "lowLearningCurve"
-                ]
-            }
+            "name": "stdout",
+            "output_type": "stream",
+            "text": [
+                input
+            ]
         })
 }
 
