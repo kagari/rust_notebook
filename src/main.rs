@@ -6,7 +6,6 @@ extern crate json;
 
 use std::path::Path;
 use std::fs::File;
-use std::fs::{write};
 use std::io::{Read};
 use std::process::Command; // Rust のプロセスを立てる
 use rocket::response::content::Html;
@@ -15,7 +14,10 @@ use rocket_contrib::json::JsonValue;
 fn run(input: &str) -> String {
     let path = Path::new("./tmp.rs");
     std::fs::write(path, input);
-    Command::new("rustc").arg(path).output().expect("failed to compile");
+    if let hoge =  Command::new("rustc").arg(path).output().expect("failed to compile").stderr {
+        return String::from_utf8(hoge).unwrap();
+    };
+    // コンパイル時にエラーが出た場合に以下の処理を行わない
     let output = Command::new("./tmp").output().expect("failed to execute process");
     Command::new("rm").args(&["-f", "./tmp.rs", "./tmp"]).output().expect("failed to remove tmp file");
     String::from_utf8(output.stdout).unwrap()
