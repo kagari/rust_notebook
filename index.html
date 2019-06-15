@@ -6,12 +6,12 @@
     <h1>hello,world</h1>
 
     <script>
-      $.post('http://127.0.0.1:3000', 'hello, world!').done(function(data) {
+      $.post('http://localhost:8000/api', 'hello, world!').done(function(data) {
           $('pre').html(`${data}`)
       })
     </script>
 
-    <form action="http://127.0.0.1:3000" method="POST" id="new-message">
+    <form action="http://localhost:8000/tree" method="POST" id="new-message">
       <textarea name="mycode"
                 id="message-text"
                 autocorrect="off"

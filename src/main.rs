@@ -10,7 +10,7 @@ use std::io::Read;
 use rocket::response::content::Html;
 use rocket_contrib::json::JsonValue;
 
-#[post("/hello")]
+#[post("/")]
 fn hello_test() -> JsonValue {
     json!(
         {
