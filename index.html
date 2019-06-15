@@ -5,13 +5,7 @@
   <body>
     <h1>hello,world</h1>
 
-    <script>
-      $.post('http://localhost:8000/api', 'hello, world!').done(function(data) {
-          $('pre').html(`${data}`)
-      })
-    </script>
-
-    <form action="http://localhost:8000/tree" method="POST" id="new-message">
+    <!-- <form action="http://localhost:8000/api" method="POST" id="new-message">
       <textarea name="mycode"
                 id="message-text"
                 autocorrect="off"
@@ -27,9 +21,61 @@
                        resize: none;
                        overflow: scroll;"></textarea></br></br>
       <input type="submit" value="echo">
-    </form>
-    <pre>
-    </pre>
-    
+    </form> -->
+    <div class="input">
+      <!-- <textarea name="mycode"
+                id="message-text"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                tabindex="0"
+                style="position: absolute;
+                       // bottom: -1em;
+                       padding: 0px;
+                       width: 1000px;
+                       // height: 1px;
+                       outline: none;
+                       resize: none;
+                       overflow: scroll;"></textarea> -->
+      <textarea rows="8" cols="80" id="code"></textarea>
+    </div>
+
+    <button type="button" id="submit">submit</button>
+
+    <div class="output">
+      <pre></pre>
+    </div>
+
+
+    <script>
+      $(function(){
+        $('#submit').on('click', function() {
+          var $input = $('.input textarea').val();
+
+          $.ajax({
+              url:'http://localhost:8000/api',
+              type:'POST',
+              data:$input
+          })
+          // Ajaxリクエストが成功した時発動
+          .done( (data) => {
+              $('.output pre').html(data.text[0]);
+              console.log(data);
+          })
+          // Ajaxリクエストが失敗した時発動
+          .fail( (data) => {
+              // $('.result').html(data);
+              console.log(data);
+          })
+          // Ajaxリクエストが成功・失敗どちらでも発動
+          .always( (data) => {
+
+          });
+        });
+      });
+      // .post('http://localhost:8000/apsi', 'hello, world!').done(function(data) {
+      //     $('pre').html(`${data}`)
+      // })
+    </script>
   </body>
 </html>
