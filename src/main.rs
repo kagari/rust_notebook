@@ -17,6 +17,7 @@ fn run(input: &str) -> String {
     std::fs::write(path, input);
     Command::new("rustc").arg(path).output().expect("failed to compile");
     let output = Command::new("./tmp").output().expect("failed to execute process");
+    Command::new("rm").args(&["-f", "./tmp.rs", "./tmp"]).output().expect("failed to remove tmp file");
     String::from_utf8(output.stdout).unwrap()
 }
 
