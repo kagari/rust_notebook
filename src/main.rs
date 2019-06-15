@@ -14,14 +14,15 @@ use rocket_contrib::json::JsonValue;
 fn run(input: &str) -> String {
     let path = Path::new("./tmp.rs");
     std::fs::write(path, input);
-    let err = Command::new("rustc").arg(path).output().expect("failed to compile").stderr;
-    if !err.is_empty() {
-        return String::from_utf8(err).unwrap();
+    let output = Command::new("rustc").arg(path).output().expect("failed to compile");
+    // コンパイル時にエラーが出た場合に実行処理を行わなわず、エラー文を返す
+    if !output.status.success() {
+        Command::new("rm").args(&["-f", "./tmp.rs"]).output().expect("failed to remove tmp file");
+        return String::from_utf8(output.stderr).unwrap();
     };
-    // コンパイル時にエラーが出た場合に以下の処理を行わない
-    let output = Command::new("./tmp").output().expect("failed to execute process");
+    let output = Command::new("./tmp").output().expect("failed to execute child").stdout;
     Command::new("rm").args(&["-f", "./tmp.rs", "./tmp"]).output().expect("failed to remove tmp file");
-    String::from_utf8(output.stdout).unwrap()
+    String::from_utf8(output).unwrap()
 }
 
 #[post("/", data="<input>")]
