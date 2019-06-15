@@ -64,6 +64,20 @@
 
     <script>
       $(function(){
+
+        // textareaでTabKeyでインデント出来るようにする．
+        $('textarea').on('keydown', function(e){
+            if (e.keyCode === 9) {
+                e.preventDefault();
+                var elem = e.target;
+                var val = elem.value;
+                var pos = elem.selectionStart;
+                var tabLength = 4  // tab length (space)
+                elem.value = val.substr(0, pos) + ' '.repeat(tabLength) + val.substr(pos, val.length);
+                elem.setSelectionRange(pos + tabLength, pos + tabLength);
+            }
+        });
+
         $('#submit').on('click', function() {
           var $input = $('.input textarea').val();
           $('.output pre').text('');
