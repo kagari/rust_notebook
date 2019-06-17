@@ -1,67 +1,10 @@
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <style>
-      body {
-        background-color: #F5F5F5;
-      }
-
-      .app {
-        width: 800px;
-
-        margin: auto;
-        padding: 15px;
-
-        background-color: white;
-        filter: drop-shadow(0px 0px 6px #D3D3D3);
-      }
-
-      @media screen and (max-width: 869px) {
-        .app {
-          width: 92%;
-        }
-      }
-
-      .input {
-        padding: 5px;
-      }
-
-      .input textarea {
-        width:  100%;
-        height: 300px;
-
-        padding: 0.5rem;
-
-        outline: none;
-        resize: none;
-        overflow-wrap: break-word;
-        overflow-x: scroll;
-        overflow-y: scroll;
-
-        border: 1px solid #cfcfcf;
-        background-color: #F5F5F5;
-
-        font-family: "Menlo", serif;
-        font-size: 16px;
-      }
-
-      .output {
-        padding: 5px;
-      }
-
-      .output pre {
-        width: 100%;
-
-        margin: 0;
-
-        overflow: scroll;
-
-        font-family: "Menlo", serif;
-        font-size: 16px;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
+    
     <div class="app">
       <div class="input" tabindex="2">
         <textarea autocorrect="off" autocapitalize="off" spellcheck=false tabindex="0"></textarea>
@@ -74,57 +17,6 @@
       </div>
     </div>
 
-    <script>
-      $(function(){
-        function submitCode() {
-          var $input = $('.input textarea').val();
-          $('.output pre').text('');
-
-          $.ajax({
-              url:'http://localhost:8000/api',
-              type:'POST',
-              data:$input
-          })
-          // Ajaxリクエストが成功した時発動
-          .done( (data) => {
-              $('.output pre').html(data.text[0]);
-              // console.log(data);
-          })
-          // Ajaxリクエストが失敗した時発動
-          .fail( (data) => {
-              $('.output pre').html(data.text[0]);
-              // console.log(data);
-          })
-          // Ajaxリクエストが成功・失敗どちらでも発動
-          .always( (data) => {
-          });
-        }
-
-        $('.input, .input textarea').on('keydown', function(e){
-          if(event.shiftKey){
-            if(e.keyCode === 13){
-              submitCode();
-              return false;
-            }
-          }
-        });
-        // textareaでTabKeyでインデント出来るようにする．
-        $('textarea').on('keydown', function(e){
-            if (e.keyCode === 9) {
-                e.preventDefault();
-                var elem = e.target;
-                var val = elem.value;
-                var pos = elem.selectionStart;
-                var tabLength = 4  // tab length (space)
-                elem.value = val.substr(0, pos) + ' '.repeat(tabLength) + val.substr(pos, val.length);
-                elem.setSelectionRange(pos + tabLength, pos + tabLength);
-            }
-        });
-
-        // $('#submit').on('click', function() {
-        //   submitCode();
-        // });
-      });
-    </script>
+    <script type="text/javascript" src="index.js"></script>
   </body>
 </html>
