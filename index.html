@@ -16,6 +16,12 @@
         filter: drop-shadow(0px 0px 6px #D3D3D3);
       }
 
+      @media screen and (max-width: 869px) {
+        .app {
+          width: 92%;
+        }
+      }
+
       .input {
         padding: 5px;
       }
@@ -28,7 +34,9 @@
 
         outline: none;
         resize: none;
-        overflow: scroll;
+        overflow-wrap: break-word;
+        overflow-x: scroll;
+        overflow-y: scroll;
 
         border: 1px solid #cfcfcf;
         background-color: #F5F5F5;
@@ -45,6 +53,8 @@
         width: 100%;
 
         margin: 0;
+
+        overflow: scroll;
 
         font-family: "Menlo", serif;
         font-size: 16px;
