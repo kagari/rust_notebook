@@ -11,9 +11,14 @@ use std::process::Command; // Rust のプロセスを立てる
 use rocket::response::content::Html;
 use rocket_contrib::json::JsonValue;
 
+fn _sorround_main_func(body: &str) -> String {
+    format!("fn main() {{\n{}\n}}", body)
+}
+
 fn run(input: &str) -> String {
     let path = Path::new("./tmp.rs");
-    std::fs::write(path, input);
+    let main = _sorround_main_func(input);
+    std::fs::write(path, main);
     let output = Command::new("rustc").arg(path).output().expect("failed to compile");
     // コンパイル時にエラーが出た場合に実行処理を行わなわず、エラー文を返す
     if !output.status.success() {
